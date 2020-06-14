@@ -2,6 +2,8 @@
 
 const { createLogger, format, transports } = require('winston');
 
+const APP_ROOT = global.APP_ROOT;
+
 // define custom levels
 const levels = {
 	http: 0,
@@ -13,6 +15,38 @@ const levels = {
 	silly: 6
 };
 
+const Logformat = format.combine(
+	format.timestamp({
+		format: 'YYYY-MM-DD HH:mm:ss'
+	}),
+	format.errors({ stack: true }),
+	format.splat(),
+	format.json()
+);
+
+const dateFormat = () => {
+	return new Date(Date.now()).toUTCString();
+};
+
+const IsJsonObj = (str) => {
+	if (typeof str === 'object') {
+		return true;
+	}
+	return false;
+};
+
+const logLevel = (level) => {
+	level = level.toUpperCase()
+	if (level === 'ERROR') return `\x1b[31m${level}\x1b[0m`;
+	if (level === 'HTTP') return `\x1b[35m${level}\x1b[0m`;
+	if (level === 'DEBUG') return `\x1b[33m${level}\x1b[0m`;
+	return `\x1b[32m${level}\x1b[0m`;
+};
+
+const wrapInColor = (msg, colorCode) => {
+	return `\x1b[${colorCode}m${msg}\x1b[0m`;
+};
+
 // define the custom settings for each transport (file, console)
 const options = {
 	file: {
@@ -22,7 +56,8 @@ const options = {
 		json: true,
 		maxsize: 5242880, // 5MB
 		maxFiles: 5,
-		colorize: false
+		colorize: false,
+		format: Logformat
 	},
 	httpLog: {
 		level: 'http',
@@ -31,18 +66,24 @@ const options = {
 		json: true,
 		maxsize: 5242880, // 5MB
 		maxFiles: 5,
-		colorize: false
+		colorize: false,
+		format: Logformat
 	},
 	console: {
 		level: 'debug',
 		handleExceptions: true,
 		json: false,
-		colorize: true
+		colorize: true,
+		format: format.printf((info) => {
+			let message = `${dateFormat()} | ${logLevel(info.level)} | ${wrapInColor('app.log', 34)} | `;
+			message = IsJsonObj(info.message) ? message + `data: ${wrapInColor(JSON.stringify(info.message), 36)}` : message + `msg: ${wrapInColor(info.message, 36)}`;
+			return message;
+		})
 	},
 	http: {
-		host: 'localhost',
-		port: '3003',
-		path: '/log'
+		host: 'localhost', // Change this value with your api server host
+		port: '3003', // Change this value with your api server port
+		path: '/log' // Change this value with api path
 	}
 };
 
@@ -50,14 +91,6 @@ const options = {
 const logger = createLogger({
 	defaultMeta: { service: 'express-boilerplate' },
 	levels: levels,
-	format: format.combine(
-		format.timestamp({
-			format: 'YYYY-MM-DD HH:mm:ss'
-		}),
-		format.errors({ stack: true }),
-		format.splat(),
-		format.json()
-	),
 	transports: [
 		new transports.File(options.httpLog),
 		new transports.File(options.file),

@@ -10,7 +10,6 @@ global.APP_ROOT = path.resolve(__dirname, '../');
 
 require('dotenv').config();
 require('./db');
-const { logger } = require('./config');
 const { httpLog } = require('./utils')
 
 const routes = require('./routes');
