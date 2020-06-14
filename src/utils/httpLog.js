@@ -1,7 +1,5 @@
 'use strict';
 
-const { logger } = require('../config');
-
 const log = () => {
 	return (req, res, next) => {
 		const { rawHeaders, httpVersion, method, socket, url } = req;

@@ -19,5 +19,9 @@
 	],
 	"rules": {
 		"no-process-exit": "off"
+	},
+	"globals": {
+		"logger": true,
+		"APP_ROOT": true
 	}
 }

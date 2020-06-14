@@ -3,8 +3,6 @@
 const { createLogger, format, transports } = require('winston');
 require('dotenv').config();
 
-const APP_ROOT = global.APP_ROOT;
-
 // define custom levels
 const levels = {
 	http: 0,

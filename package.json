@@ -1,6 +1,6 @@
 {
 	"name": "express_boilerplate",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"description": "Express boilerplate with all basic integration",
 	"type": "commonjs",
 	"main": "server.js",
@@ -9,6 +9,8 @@
 		"dev": "nodemon src/server.js",
 		"lint": "./node_modules/.bin/eslint ./src",
 		"lint:fix": "./node_modules/.bin/eslint ./src --fix",
+		"predeploy": "NODE_ENV=production npm install",
+		"deploy": "NODE_ENV=production npm start",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [
@@ -18,10 +20,18 @@
 		"logging",
 		"auth",
 		"validation",
-		"boilerplate"
+		"boilerplate-template"
 	],
 	"author": "Anurag Mishra",
 	"license": "MIT",
+	"homepage": "https://github.com/anuragmishra1/express_boilerplate#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anuragmishra1/express_boilerplate.git"
+	},
+	"bugs": {
+		"url": "https://github.com/anuragmishra1/express_boilerplate/issues"
+	},
 	"dependencies": {
 		"@hapi/joi": "^17.1.1",
 		"body-parser": "^1.19.0",
