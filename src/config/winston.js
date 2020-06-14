@@ -1,6 +1,7 @@
 'use strict';
 
 const { createLogger, format, transports } = require('winston');
+require('dotenv').config();
 
 const APP_ROOT = global.APP_ROOT;
 
@@ -91,7 +92,9 @@ const options = {
 
 // instantiate a new Winston Logger with the settings defined above
 const logger = createLogger({
-	defaultMeta: { service: 'express-boilerplate' },
+	defaultMeta: {
+		service: process.env.SERVICE_NAME
+	},
 	levels: levels,
 	transports: [
 		new transports.File(options.httpLog),

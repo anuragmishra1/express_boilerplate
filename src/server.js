@@ -17,9 +17,9 @@ const routes = require('./routes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const { MONGODB_URI, JWT_SECRET_KEY } = process.env;
+const { MONGODB_URI, JWT_SECRET_KEY, SERVICE_NAME } = process.env;
 
-if (!MONGODB_URI || !JWT_SECRET_KEY) {
+if (!MONGODB_URI || !JWT_SECRET_KEY || !SERVICE_NAME) {
 	console.error('\x1b[31m%s\x1b[0m', '----- Required envs are not available -----');
 	process.exit(1);
 }
