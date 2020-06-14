@@ -83,7 +83,9 @@ const options = {
 	http: {
 		host: 'localhost', // Change this value with your api server host
 		port: '3003', // Change this value with your api server port
-		path: '/log' // Change this value with api path
+		path: '/log', // Change this value with api path
+		// auth: 'None',
+		ssl: false
 	}
 };
 
