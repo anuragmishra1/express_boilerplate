@@ -37,7 +37,8 @@ const login = async (req, res) => {
 	try {
 		token = jwt.sign({
 			id: userData._id,
-			role: userData.role
+			role: userData.role,
+			email: userData.email
 		}, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
 	} catch (err) {
 		return res.status(400).send({
