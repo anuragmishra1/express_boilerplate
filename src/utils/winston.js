@@ -35,7 +35,7 @@ const IsJsonObj = (str) => {
 };
 
 const logLevel = (level) => {
-	level = level.toUpperCase()
+	level = level.toUpperCase();
 	if (level === 'ERROR') return `\x1b[31m${level}\x1b[0m`;
 	if (level === 'HTTP') return `\x1b[35m${level}\x1b[0m`;
 	if (level === 'DEBUG') return `\x1b[33m${level}\x1b[0m`;
@@ -74,8 +74,11 @@ const options = {
 		json: false,
 		colorize: true,
 		format: format.printf((info) => {
-			let message = `${dateFormat()} | ${logLevel(info.level)} | ${wrapInColor('app.log', 34)} | `;
-			message = IsJsonObj(info.message) ? message + `data: ${wrapInColor(JSON.stringify(info.message), 36)}` : message + `msg: ${wrapInColor(info.message, 36)}`;
+			let message = `${dateFormat()} | ${logLevel(info.level)} | `;
+			message = message + `${wrapInColor('app.log', 34)} | `;
+			message = IsJsonObj(info.message)
+				? message + `data: ${wrapInColor(JSON.stringify(info.message), 36)}`
+				: message + `msg: ${wrapInColor(info.message, 36)}`;
 			return message;
 		})
 	},
@@ -84,7 +87,7 @@ const options = {
 		port: '3003', // Change this value with your api server port
 		path: '/log', // Change this value with api path
 		// auth: 'None',
-		ssl: false
+		ssl: false // make it true if your server is configured with SSL
 	}
 };
 
@@ -97,18 +100,10 @@ const logger = createLogger({
 	transports: [
 		new transports.File(options.httpLog),
 		new transports.File(options.file),
-		new transports.Console(options.console),
+		new transports.Console(options.console)
 		// new transports.Http(options.http)
 	],
-	exitOnError: false, // do not exit on handled exceptions
+	exitOnError: false // do not exit on handled exceptions
 });
-
-// // create a stream object with a 'write' function that will be used by `morgan`
-// logger.stream = {
-// 	write: function (message, encoding) {
-// 		// use the 'info' log level so the output will be picked up by both transports (file and console)
-// 		logger.info(message);
-// 	},
-// };
 
 module.exports = logger;

@@ -3,22 +3,43 @@
 		"commonjs": true,
 		"es2020": true,
 		"node": true,
-		"mocha": true
+		"jest": true
 	},
 	"extends": [
 		"eslint:recommended",
 		"plugin:security/recommended",
-		"plugin:node/recommended"
+		"plugin:node/recommended",
+		"plugin:prettier/recommended"
 	],
 	"parserOptions": {
 		"sourceType": "module",
 		"ecmaVersion": 11
 	},
 	"plugins": [
-		"security"
+		"security",
+		"node",
+		"prettier"
 	],
 	"rules": {
-		"no-process-exit": "off"
+		"no-process-exit": "off",
+		"node/exports-style": [
+			"error",
+			"module.exports"
+		],
+		"node/no-extraneous-require": "error",
+		"prettier/prettier": [
+			"error",
+			{
+				"singleQuote": true,
+				"parser": "flow",
+				"useTabs": true,
+				"trailingComma": "none",
+				"endOfLine": "lf",
+				"semi": true,
+				"bracketSpacing": true,
+				"arrowParens": "always"
+			}
+		]
 	},
 	"globals": {
 		"logger": true,

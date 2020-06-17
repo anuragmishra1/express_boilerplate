@@ -21,13 +21,21 @@ module.exports = (model) => {
 
 	module.findOne = async (criteria, projection, options) => {
 		options.lean = true;
-		return await Models[model.toString()].findOne(criteria, projection, options);
+		return await Models[model.toString()].findOne(
+			criteria,
+			projection,
+			options
+		);
 	};
 
 	module.update = async (criteria, dataToSet, options) => {
 		options.lean = true;
 		options.new = true;
-		return await Models[model.toString()].findOneAndUpdate(criteria, dataToSet, options);
+		return await Models[model.toString()].findOneAndUpdate(
+			criteria,
+			dataToSet,
+			options
+		);
 	};
 
 	module.deleteOne = async (criteria) => {

@@ -35,15 +35,21 @@ const login = async (req, res) => {
 	let token = null;
 	let userData = users[0];
 	try {
-		token = jwt.sign({
-			id: userData._id,
-			role: userData.role,
-			email: userData.email
-		}, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
+		token = jwt.sign(
+			{
+				id: userData._id,
+				role: userData.role,
+				email: userData.email
+			},
+			process.env.JWT_SECRET_KEY,
+			{
+				expiresIn: '24h'
+			}
+		);
 	} catch (err) {
 		return res.status(400).send({
 			status: 'failure'
-		})
+		});
 	}
 
 	res.status(200).send({
@@ -93,7 +99,7 @@ const update = async (req, res) => {
 
 	const criteria = {
 		_id: req.params.id
-	}
+	};
 
 	try {
 		userData = await Services.user.update(criteria, req.body, {});
@@ -141,7 +147,8 @@ const getDetail = async (req, res) => {
 	const projection = {
 		__v: 0,
 		password: 0
-	}
+	};
+
 	try {
 		userData = await Services.user.findById(req.params.id, projection);
 	} catch (err) {
@@ -161,6 +168,7 @@ const remove = async (req, res) => {
 	const criteria = {
 		_id: req.params.id
 	};
+
 	try {
 		await Services.user.deleteOne(criteria);
 	} catch (err) {

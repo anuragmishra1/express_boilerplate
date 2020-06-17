@@ -14,7 +14,7 @@ const log = () => {
 			url
 		});
 		next();
-	}
+	};
 };
 
 module.exports = log;

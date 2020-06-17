@@ -15,17 +15,17 @@ const params = (schema) => {
 const validate = (schema, where) => {
 	return (req, res, next) => {
 		const { error } = schema.validate(req[where.toString()]);
-		const valid = (error === undefined);
+		const valid = error === undefined;
 
 		if (valid) {
 			next();
 		} else {
 			const { details } = error;
-			const message = details.map(i => i.message).join(',');
+			const message = details.map((i) => i.message).join(',');
 
 			res.status(422).json({ error: message });
 		}
-	}
+	};
 };
 
 module.exports = {
