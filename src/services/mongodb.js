@@ -10,16 +10,16 @@ module.exports = (model) => {
 		return data.toObject();
 	};
 
-	module.findById = async (id, projection, options) => {
+	module.findById = async (id, projection = {}, options = {}) => {
 		return await Models[model.toString()].findById(id, projection, options);
 	};
 
-	module.find = async (criteria, projection, options) => {
+	module.find = async (criteria = {}, projection = {}, options = {}) => {
 		options.lean = true;
 		return await Models[model.toString()].find(criteria, projection, options);
 	};
 
-	module.findOne = async (criteria, projection, options) => {
+	module.findOne = async (criteria = {}, projection = {}, options = {}) => {
 		options.lean = true;
 		return await Models[model.toString()].findOne(
 			criteria,
@@ -28,7 +28,7 @@ module.exports = (model) => {
 		);
 	};
 
-	module.update = async (criteria, dataToSet, options) => {
+	module.update = async (criteria, dataToSet, options = {}) => {
 		options.lean = true;
 		options.new = true;
 		return await Models[model.toString()].findOneAndUpdate(
@@ -42,7 +42,7 @@ module.exports = (model) => {
 		return await Models[model.toString()].deleteOne(criteria);
 	};
 
-	module.count = async (criteria) => {
+	module.count = async (criteria = {}) => {
 		return await Models[model.toString()].countDocuments(criteria);
 	};
 

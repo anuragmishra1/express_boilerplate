@@ -5,10 +5,10 @@ require('dotenv').config();
 const Services = require('../services');
 
 const login = async (req, res) => {
-	let users = [];
+	let userData = {};
 	const criteria = {
 		email: req.body.email,
-		password: Buffer.from(req.body.password, 'base64')
+		password: Buffer.from(req.body.password).toString('base64')
 	};
 
 	const projection = {
@@ -17,7 +17,7 @@ const login = async (req, res) => {
 	};
 
 	try {
-		users = await Services.user.find(criteria, projection, {});
+		userData = await Services.user.findOne(criteria, projection);
 	} catch (err) {
 		return res.status(400).json({
 			status: 'failure',
@@ -25,15 +25,14 @@ const login = async (req, res) => {
 		});
 	}
 
-	if (users.length === 0) {
-		return res.status(404).json({
+	if (!userData) {
+		return res.status(401).json({
 			status: 'failure',
 			message: 'Email or password is incorrect'
 		});
 	}
 
 	let token = null;
-	let userData = users[0];
 	try {
 		token = jwt.sign(
 			{
@@ -61,7 +60,7 @@ const login = async (req, res) => {
 
 const create = async (req, res) => {
 	let userData = {};
-	req.body.password = Buffer.from(req.body.password, 'base64');
+	req.body.password = Buffer.from(req.body.password).toString('base64');
 
 	try {
 		userData = await Services.user.create(req.body);
@@ -74,6 +73,7 @@ const create = async (req, res) => {
 
 	res.status(200).json({
 		status: 'success',
+		message: 'User created successfully',
 		id: userData._id
 	});
 };
@@ -102,7 +102,7 @@ const update = async (req, res) => {
 	};
 
 	try {
-		userData = await Services.user.update(criteria, req.body, {});
+		await Services.user.update(criteria, req.body);
 	} catch (err) {
 		return res.status(400).json({
 			status: 'failure',
@@ -112,7 +112,7 @@ const update = async (req, res) => {
 
 	res.status(200).json({
 		status: 'success',
-		message: 'Updated successfully'
+		message: 'User updated successfully'
 	});
 };
 
@@ -180,7 +180,7 @@ const remove = async (req, res) => {
 
 	res.status(200).json({
 		status: 'success',
-		message: 'Deleted successfully'
+		message: 'User deleted successfully'
 	});
 };
 
